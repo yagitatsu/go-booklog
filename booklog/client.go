@@ -3,6 +3,7 @@ package booklog
 import (
 	"net/http"
 	"net/url"
+
 	"github.com/pkg/errors"
 )
 
@@ -24,7 +25,7 @@ func NewClient(host string, cli *http.Client) (*Client, error) {
 		cli = http.DefaultClient
 	}
 	return &Client{
-		url: u,
+		url:    u,
 		client: cli,
 	}, nil
 }
