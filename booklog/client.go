@@ -77,13 +77,16 @@ func (c *Client) Get(id string, opts *GetOptions) (GetResult, error) {
 	u := *c.url
 	u.Path = u.Path + "/" + id
 	if opts != nil {
+		q := u.Query()
 		if opts.Count > 0 {
-			u.Query().Set("count", fmt.Sprint(opts.Count))
+			q.Set("count", fmt.Sprint(opts.Count))
 		}
 		if opts.Status > 0 {
-			u.Query().Set("status", fmt.Sprint(opts.Status))
+			q.Set("status", fmt.Sprint(opts.Status))
 		}
+		u.RawQuery = q.Encode()
 	}
+	fmt.Printf(u.String())
 	resp, err := c.client.Get(u.String())
 	if err != nil {
 		return GetResult{}, errors.Wrap(err, errtag)
