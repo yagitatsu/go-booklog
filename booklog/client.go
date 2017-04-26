@@ -86,7 +86,6 @@ func (c *Client) Get(id string, opts *GetOptions) (GetResult, error) {
 		}
 		u.RawQuery = q.Encode()
 	}
-	fmt.Printf(u.String())
 	resp, err := c.client.Get(u.String())
 	if err != nil {
 		return GetResult{}, errors.Wrap(err, errtag)
