@@ -1,11 +1,12 @@
 package booklog
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 
+	"encoding/json"
 	"github.com/pkg/errors"
-	"fmt"
 )
 
 const (
@@ -30,7 +31,26 @@ type (
 
 	}
 	GetResult struct {
+		Shelf struct {
+			ID       string `json:"id"`
+			Account  string `json:"acount"`
+			Name     string `json:"name"`
+			ImageURL string `json:"image_url"`
+		} `json:"tana"`
+		Categories []string `json:"category"`
+		Books      []Book   `json:"books"`
+	}
 
+	Book struct {
+		ID      string `json:"id"`
+		ASIN    string `json:"asin"`
+		URL     string `json:"url"`
+		Title   string `json:"title"`
+		Author  string `json:"author"`
+		Image   string `json:"image"`
+		Width   string `json:"width"`
+		Height  string `json:"height"`
+		Catalog string `json:"catalog"`
 	}
 )
 
@@ -72,6 +92,10 @@ func (c *Client) Get(id string, opts *GetOptions) (GetResult, error) {
 	if resp.StatusCode != http.StatusOK {
 		return GetResult{}, fmt.Errorf("%s: status code = %d", errtag, resp.StatusCode)
 	}
+	var r GetResult
+	if err := json.NewDecoder(resp.Body).Decode(&r); err != nil {
+		return GetResult{}, err
+	}
 
-	return GetResult{}, nil
+	return r, nil
 }
