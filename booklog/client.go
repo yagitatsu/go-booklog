@@ -81,7 +81,7 @@ func (c *Client) Get(id string, opts *GetOptions) (GetResult, error) {
 			u.Query().Set("count", fmt.Sprint(opts.Count))
 		}
 		if opts.Status > 0 {
-			u.Query().Set("count", fmt.Sprint(opts.Status))
+			u.Query().Set("status", fmt.Sprint(opts.Status))
 		}
 	}
 	resp, err := c.client.Get(u.String())
